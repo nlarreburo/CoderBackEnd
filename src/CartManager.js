@@ -1,7 +1,10 @@
 import fs from 'fs'
 import ProductManager from '../src/ProductManager.js'
-const filePathProd = String(new URL(import.meta.url).pathname).replace('CartManager.js','routes/products.JSON').substring(1,999)
-const productManager = new ProductManager(filePathProd)
+import __dirname from './utils.js'
+
+
+const filePath = __dirname + '/routes/JSON/products.JSON'
+const productManager = new ProductManager(filePath)
 
 
 export default class CartManager {

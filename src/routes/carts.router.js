@@ -1,8 +1,8 @@
 import { Router } from "express"
 import CartManager from '../CartManager.js'
+import __dirname from "../utils.js"
 
-const filePath = String(new URL(import.meta.url).pathname).replace('carts.router.js','carts.JSON').substring(1,999)
-
+const filePath = __dirname + '/routes/JSON/carts.JSON'
 const router = Router()
 const cartManager = new CartManager(filePath)
 

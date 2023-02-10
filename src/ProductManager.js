@@ -6,6 +6,7 @@ export default class ProductManager {
     constructor(ruta){
         this.path = ruta
     }
+
     //Funcion obtener products
     gProducts = async () =>{
         try {
@@ -38,7 +39,7 @@ export default class ProductManager {
     getProducts = async () =>{
         if(!fs.existsSync(this.path)){return console.log("No se encuentra el archivo");} //Consulta si existe la ruta con el archivo
         const products = await this.gProducts()
-        console.log(products)
+        //console.log(products)
         return products
     }
 
@@ -137,7 +138,7 @@ export default class ProductManager {
 
 }
 
-//const productManager = new ProductManager('./products.JSON')
+//const productManager = new ProductManager('./JSON/products.JSON')
 //productManager.addProduct("producto prueba","Este es un producto prueba",200,"Sin imagen","abc10",25)
 //productManager.addProduct("producto prueba","Este es un producto prueba",200,"Sin imagen","abc2",25)
 //productManager.addProduct("producto prueba","Este es un producto prueba",200,"Sin imagen","abc3",25)
