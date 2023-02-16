@@ -1,8 +1,7 @@
-import { Router } from "express"
-import CartManager from '../CartManager.js'
-import __dirname from "../utils.js"
+const { Router } = require('express')
+const CartManager= require('../manager/CartManager.js')
 
-const filePath = __dirname + '/routes/JSON/carts.JSON'
+const filePath = __dirname + '/JSON/carts.JSON'
 const router = Router()
 const cartManager = new CartManager(filePath)
 
@@ -42,4 +41,4 @@ router.get('/:cid', async (req,res) => {
 
 
 
-export default router
+module.exports = router

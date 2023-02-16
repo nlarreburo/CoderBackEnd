@@ -1,39 +1,33 @@
 <div>
     <div>
-        <h1>Agregar producto</h1>
-        <form action="/api/products/" method="post">
-            <label>Title</label>
-            <input name="title" id="title">
-            <label>Description</label>
-            <input name="description" id="description">
-            <label>Price</label>
-            <input name="price" id="price">
-            <label>Image</label>
-            <input name="thumbnail" id="thumbnail">
-            <label>Code</label>
-            <input name="code" id="code">
-            <label>Stock</label>
-            <input name="stock" id="stock">
-            <button name="buttomProd" id="buttomProd">Enviar</button>
-        </form>
+        <h2>Agregar producto</h2>
+
+        <label>Title</label>
+        <input name="title" id="title">
+        <label>Description</label>
+        <input name="description" id="description">
+        <label>Price</label>
+        <input name="price" id="price">
+        <label>Image</label>
+        <input name="thumbnail" id="thumbnail">
+        <label>Code</label>
+        <input name="code" id="code">
+        <label>Stock</label>
+        <input name="stock" id="stock">
+        <button name="buttomProd" id="buttomProd">Enviar</button>
     </div>
+
     <div>
-        <h1>Productos agregados:</h1>
-        {{#each products}}
-        <div>
-            <p>Title: {{this.title}}</p>
-            <p>Description: {{this.description}}</p>
-            <p>Price: {{this.price}}</p>
-            <p>Image: {{this.thumbnail}}</p>
-            <p>Code: {{this.code}}</p>
-            <p>Stock: {{this.stock}}</p>
-            <p>ID: {{this.id}}</p>
-            <p>Status: {{this.status}}</p>
-            <br>
-        </div>
-        {{/each}}
+        <h2>Eliminar producto</h2>
+        <label>Ingrese ID</label>
+        <input name="prodID" id="prodID" type="number">
+        <button name="buttomID" id="buttomID">Enviar</button>
+    </div>
+
+    <div id="divProd">
+
     </div>
 </div>
 
 <script src="/socket.io/socket.io.js"></script>
-<script src="/src/public/js/index.js"></script>
+<script src="/virtual/js/index.js"></script>

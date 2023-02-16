@@ -1,8 +1,7 @@
-import { Router } from "express"
-import ProductManager from '../ProductManager.js'
-import __dirname from "../utils.js"
+const { Router } = require('express')
+const ProductManager = require('../manager/ProductManager.js')
 
-const filePath = __dirname + '/routes/JSON/products.JSON'
+const filePath = __dirname + '/JSON/products.JSON'
 const router = Router()
 const productManager = new ProductManager(filePath)
 
@@ -18,4 +17,4 @@ router.get('/realtimeproducts', async (req, res) =>{
 
 })
 
-export default router
+module.exports = router

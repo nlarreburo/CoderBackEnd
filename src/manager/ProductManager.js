@@ -1,7 +1,7 @@
-import fs from 'fs'
+const fs= require('fs')
 
 
-export default class ProductManager {
+class ProductManager {
 
     constructor(ruta){
         this.path = ruta
@@ -138,6 +138,7 @@ export default class ProductManager {
 
 }
 
+module.exports = ProductManager
 //const productManager = new ProductManager('./JSON/products.JSON')
 //productManager.addProduct("producto prueba","Este es un producto prueba",200,"Sin imagen","abc10",25)
 //productManager.addProduct("producto prueba","Este es un producto prueba",200,"Sin imagen","abc2",25)

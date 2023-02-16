@@ -1,10 +1,10 @@
-import { Router } from "express"
-import ProductManager from '../ProductManager.js'
-import __dirname from "../utils.js"
+const { Router } = require('express')
+const ProductManager = require('../manager/ProductManager.js')
 
-const filePath = __dirname + '/routes/JSON/products.JSON'
+const filePath = __dirname + '/JSON/products.JSON'
 
 const router = Router()
+console.log(filePath,"alo");
 const productManager = new ProductManager(filePath)
 
 //GET http://localhost:8080/api/products/
@@ -58,4 +58,4 @@ router.delete('/:pid', async (req,res) => {
 
 
 
-export default router
+module.exports = router

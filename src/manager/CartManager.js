@@ -1,13 +1,13 @@
-import fs from 'fs'
-import ProductManager from '../src/ProductManager.js'
-import __dirname from './utils.js'
+const fs= require('fs')
+const ProductManager = require('../manager/ProductManager.js')
 
 
-const filePath = __dirname + '/routes/JSON/products.JSON'
+
+const filePath = __dirname + '/JSON/products.JSON'
 const productManager = new ProductManager(filePath)
 
 
-export default class CartManager {
+class CartManager {
 
     constructor(ruta){
         this.path = ruta
@@ -119,7 +119,5 @@ export default class CartManager {
         //Funcion agregar products
         this.aCarts(carts)
     }
-
-
-
 }
+module.exports = CartManager
