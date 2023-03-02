@@ -107,7 +107,6 @@ class ProductManager {
     updateProduct = async (id,updProd) =>{
 
         let products = await this.gProducts()
-        //console.log(products)
         products.find(p => {
             if(p.id === id){
                 for (let key in updProd){

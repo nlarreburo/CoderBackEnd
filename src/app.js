@@ -5,15 +5,22 @@ const productsRouter = require('./routes/products.router.js')
 const cartsRouter = require('./routes/carts.router.js')
 const usersRouter = require('./routes/users.router.js')
 const viewsRouter= require( './routes/views.router.js')
+const chatRouter = require('./routes/chat.router.js')
 const { Server }= require( 'socket.io')
-const ProductManager = require('./manager/ProductManager.js')
-
+const ProductManager = require('./dao/ProductManager.js')
 const {createServer}= require( 'http')
-const productManager = new ProductManager(__dirname + '/routes/JSON/products.JSON')
+const { dbConnection } = require('./config/conectionDB.js')
+const ChatModel = require('./models/chat.model.js')
+//require('dotenv').config()
 
 const app = express()
+
+dbConnection()
+
 const PORT = 8080 || process.env.PORT
 const httpServer = createServer(app)
+
+const productManager = new ProductManager(__dirname + '/routes/JSON/products.JSON')
 
 
 app.use(express.json())
@@ -21,24 +28,18 @@ app.use(express.urlencoded({extended:true}))
 
 app.use('/virtual' ,express.static(__dirname+'/public'))
 app.use(cookieParser())
-console.log(__dirname);
+
 //Handlebars
 app.engine('handlebars', handlebars.engine())
 app.set('views',__dirname + '/views')
 app.set('view engine','handlebars')
 //Handlebars
 
-// app.get('/',(req,res) => {
-//     let context = {
-//         name: 'Nicolas',
-//     }
-//     res.render('index',context)
-// })
-
 app.use('/api/user', usersRouter)
 app.use('/api/cart', cartsRouter)
 app.use('/api/products', productsRouter)
 app.use('/views',viewsRouter)
+app.use('/api/chat',chatRouter)
 
 httpServer.listen(PORT, err =>{
     if (err) console.log(err)
@@ -47,6 +48,8 @@ httpServer.listen(PORT, err =>{
 
 const io = new Server(httpServer)
 
+
+const mensajes = []
 let connectedClients = []
 
 io.on('connection', (socket) => {
@@ -62,12 +65,33 @@ io.on('connection', (socket) => {
     })
 
     socket.on('delProd', async id =>{
-        console.log(id)
         await productManager.deleteProduct(Number(id))
         let historial = await productManager.getProducts()
         io.emit('arrayProd',historial)
     })
+    
 
+    //-------Chat-------
+    socket.on('message', async data => {
+        console.log('message',data)
+        mensajes.push(data)
+        io.emit('messageLogs', mensajes)
+
+        //Agregamos los msj a la BD
+        if((await ChatModel.find()).length == 0){
+            await ChatModel.create({
+                mensajes
+            })
+        } else {
+            await ChatModel.updateOne({},{$set:{mensajes:mensajes}})
+        }
+        console.log(mensajes);
+    })
+
+    socket.on('authenticated', data => {
+        
+        socket.broadcast.emit('newUserConnected', data)
+    })
 
 
     socket.on('disconnect',()=>{

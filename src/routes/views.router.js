@@ -1,5 +1,5 @@
 const { Router } = require('express')
-const ProductManager = require('../manager/ProductManager.js')
+const ProductManager = require('../dao/ProductManager.js')
 
 const filePath = __dirname + '/JSON/products.JSON'
 const router = Router()

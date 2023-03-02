@@ -1,5 +1,5 @@
 const fs= require('fs')
-const ProductManager = require('../manager/ProductManager.js')
+const ProductManager = require('../dao/ProductManager.js')
 
 
 
