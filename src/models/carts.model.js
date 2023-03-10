@@ -3,14 +3,19 @@ const {Schema, model} = require('mongoose')
 const userCollection = 'Carts'
 
 const UserSchema = Schema({
-    id:{
-        type:Number,
-        required: true
-    },
-    product:{
-        type:Array,
-        required:true
+
+    products: {
+        type: [{
+            product: {
+                type: Schema.Types.ObjectId,
+                ref: 'product'
+            },
+            quantity: {
+                type: Number,
+            }
+        }]
     }
+
 })
 
 module.exports = model(userCollection, UserSchema)

@@ -1,7 +1,4 @@
 const CartsModel = require('../models/carts.model.js')
-const ProductManagerMongo = require('../dao/ProductManagerMongo.js')
-
-const productManagerMongo = new ProductManagerMongo()
 
 
 class CartManagerMongo {
@@ -9,20 +6,7 @@ class CartManagerMongo {
     //Crear carrito
     addCart = async() =>{
         try {
-            //Creamos id
-            var cid = ((await CartsModel.find({},{id:1,_id:0}).sort({id:-1}).limit(1)).map(doc => doc.id))[0]
-            if(cid){
-                //Sumamos al ultimo id
-                var id = cid + 1
-            }else{
-                //Creamos el primer id
-                var id = 1
-            }
-    
-            let cart = await CartsModel.create({
-                id,
-                "product" : []
-            })
+            const cart = await CartsModel.create({})
     
             return cart
 
@@ -34,24 +18,64 @@ class CartManagerMongo {
 
     //Buscar por id
     getCartsById = async(cid) =>{
-        const cart = await CartsModel.find({id:cid})
+        const cart = await CartsModel.find({_id:cid})
+        //console.log();
         return cart
+        
     }
 
 
     //Agregar prod al carrito
     updateCart = async(cid,pid) =>{
-        let product = await productManagerMongo.getProductsById(pid)
-        let cart = await this.getCartsById(cid)
-        if(!(cart[0].product.find(p => p.prodId === pid))) {
-            var newCart = [{"prodId":pid,"quantity":1}]
-            await CartsModel.updateOne({id:cid},{$set:{product:newCart}})
+        let cart = await CartsModel.findById({_id:cid})
+        cart.products.push({product:pid,quantity:1})
+        console.log(cart);
+        let resp = await CartsModel.findOneAndUpdate({_id:cid},cart)
+        console.log(resp);
+    }
+
+    //borrar producto del carrito
+    deletProdCart = async(cid,pid) =>{
+        let cart = await CartsModel.findById({_id:cid})
+        let msg = ""
+        if((cart.products.find(p => p.product == pid))) {
+            const newCart = cart.products.filter(p => p.product != pid)
+            await CartsModel.updateOne({_id:cid},{$set:{products:newCart}})
+            msg = "El producto se elimino del carrito"
         }else{
-            cart[0].product.find( async p => {if(p.prodId === pid){
-                var newQuantity = p.quantity + 1
-                var newCart = [{"prodId":pid,"quantity":newQuantity}]
-                await CartsModel.updateOne({id:cid},{$set:{product:newCart}})
-            }})
+            console.log("El producto no esta en el carrito");
+            msg = "El producto no esta en el carrito"
+        }
+        return msg
+    }
+
+    //Actualizar quantity
+    quantityProdCart = async(cid,pid,quantity) =>{
+        let cart = await CartsModel.findById({_id:cid})
+        let msg = ""
+        if((cart.products.find(p => p.product == pid))) {
+            let newCart = cart.products
+            newCart.find(t => {
+                if(t.product==pid){
+                    console.log(t);
+                    t.quantity = t.quantity + quantity
+                    console.log(t)
+                }
+            })
+            await CartsModel.updateOne({_id:cid},{$set:{products:newCart}})
+            msg = "El producto se actualizo correctamente"
+        }else{
+            console.log("El producto no esta en el carrito");
+            msg = "El producto no esta en el carrito"
+        }
+        return msg
+    }
+
+    //Borrar carrito
+    deleteCart = async(cid) => {
+        const cart = await CartsModel.findById({_id:cid})
+        if (cart){
+            await CartsModel.deleteOne({_id:cid})
         }
     }
 

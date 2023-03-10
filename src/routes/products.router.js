@@ -1,12 +1,9 @@
 const { Router } = require('express')
-const ProductManager = require('../dao/ProductManager.js')
+//const ProductManager = require('../dao/ProductManager.js')
 const ProductManagerMongo = require('../dao/ProductManagerMongo.js')
 
-const filePath = __dirname + '/JSON/products.JSON'
 
 const router = Router()
-console.log(filePath,"alo");
-const productManager = new ProductManager(filePath)
 const productManagerMongo = new ProductManagerMongo()
 
 //GET http://localhost:8080/api/products/ Muestra todos los productos
