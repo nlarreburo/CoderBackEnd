@@ -19,7 +19,8 @@ class CartManagerMongo {
     //Buscar por id
     getCartsById = async(cid) =>{
         const cart = await CartsModel.find({_id:cid})
-        //console.log();
+        //const cart = await CartsModel.find({_id:cid}).populate('products.product')
+        //console.log(JSON.stringify(cart,null,2));
         return cart
         
     }
