@@ -8,7 +8,7 @@ const UserSchema = Schema({
         type: [{
             product: {
                 type: Schema.Types.ObjectId,
-                ref: 'product'
+                ref: 'Products'
             },
             quantity: {
                 type: Number,

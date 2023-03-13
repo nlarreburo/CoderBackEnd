@@ -53,13 +53,10 @@ router.get('/:cid', async (req,res) => {
     const {cid} = req.params
     //const cart = await cartManager.getCartsById(Number(cid))
     const cart = await cartManagerMongo.getCartsById(String(cid))
-    var n = cart[0].products
+    const newCart = cart.products
 
-
-    
-    console.log(n[0]);
     res.status(200).render('cart',{
-        n
+        newCart: newCart.map(p => p.product)
     })
 })
 

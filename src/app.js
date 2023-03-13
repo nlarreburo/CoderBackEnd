@@ -27,7 +27,15 @@ app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
 app.use('/virtual' ,express.static(__dirname+'/public'))
+
+//cookies
 app.use(cookieParser())
+// app.use(session({
+//     secret: 'secretCoder',
+//     resave: true,
+//     seveUninitialized: true
+// }))
+
 
 //Handlebars
 app.engine('handlebars', handlebars.engine())
@@ -35,11 +43,14 @@ app.set('views',__dirname + '/views')
 app.set('view engine','handlebars')
 //Handlebars
 
+
+//Router
 app.use('/api/user', usersRouter)
 app.use('/api/cart', cartsRouter)
 app.use('/api/products', productsRouter)
 app.use('/views',viewsRouter)
 app.use('/api/chat',chatRouter)
+//Router
 
 httpServer.listen(PORT, err =>{
     if (err) console.log(err)

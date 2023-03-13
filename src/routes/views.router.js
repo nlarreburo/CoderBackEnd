@@ -62,7 +62,7 @@ router.get('/products', async (req,res) => {
         console.log(formatObj)
         
         res.status(200).render('views-products',{
-            products:products,
+            products,
             hasNextPage,
             hasPrevPage,
             nextPage,
