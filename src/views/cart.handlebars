@@ -1,12 +1,18 @@
 <div>
     <p>Carrito</p>
-        
-        {{#each newCart}}
+
+        {{#each newcart}}
+            <div>
+            <p> Producto: {{this.title}} - Descripcion: {{this.description}} - Precio:${{this.price}} - Imagen:{{this.thumbnail}}</p>
             <p>
-                {{this}}
-                {{title}}
+                
             </p>
+
+            </div>
+            
             
         {{/each}}
 
 </div>
+
+<script src="/virtual/js/cart.js"></script>

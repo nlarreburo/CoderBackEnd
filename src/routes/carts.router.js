@@ -52,11 +52,11 @@ router.put('/:cid/product/:pid', async (req,res) => {
 router.get('/:cid', async (req,res) => {
     const {cid} = req.params
     //const cart = await cartManager.getCartsById(Number(cid))
-    const cart = await cartManagerMongo.getCartsById(String(cid))
-    const newCart = cart.products
-
+    const cart = (await cartManagerMongo.getCartsById(String(cid))).products
+    const newcart=cart.map(p => p.product)
+    //console.log(newcart);
     res.status(200).render('cart',{
-        newCart: newCart.map(p => p.product)
+        newcart
     })
 })
 
