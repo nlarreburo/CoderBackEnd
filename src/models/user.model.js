@@ -3,11 +3,11 @@ const {Schema, model} = require('mongoose')
 const userCollection = 'Usuarios'
 
 const UserSchema = Schema({
-    nombre:{
+    first_name:{
         type: String,
         required: true
     },
-    apellido:{
+    last_name:{
         type: String,
         required: true
     },
@@ -15,6 +15,10 @@ const UserSchema = Schema({
         type: String,
         required: true,
         unique: true
+    },
+    password:{
+        type:String,
+        required:true
     }
 })
 

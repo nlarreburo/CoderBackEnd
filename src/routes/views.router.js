@@ -20,6 +20,7 @@ const router = Router()
 router.get('/products', async (req,res) => {
     try {
         const {page = 1, limit, sort} = req.query
+        console.log(req.session.user)
         var limitNum = Number(limit)
         if(!limitNum || limitNum > 10){limitNum = 10}
         if(sort){
@@ -67,7 +68,8 @@ router.get('/products', async (req,res) => {
             hasPrevPage,
             nextPage,
             prevPage,
-            page
+            page,
+            user:req.session.user
         })
 
     } catch (error) {

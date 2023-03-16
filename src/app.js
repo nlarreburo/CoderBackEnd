@@ -1,16 +1,25 @@
 const express = require('express')
 const cookieParser = require('cookie-parser')
+//---Session---
+const session = require('express-session')
+const FileStore = require('session-file-store')
+const MongoStore = require('connect-mongo')
+//---Session---
 const handlebars = require('express-handlebars')
+const homeRouter = require('./routes/home.router.js')
 const productsRouter = require('./routes/products.router.js')
 const cartsRouter = require('./routes/carts.router.js')
 const usersRouter = require('./routes/users.router.js')
 const viewsRouter= require( './routes/views.router.js')
 const chatRouter = require('./routes/chat.router.js')
+const cookieRouter = require('./routes/cookie.router.js')
+const authRouter = require('./routes/auth.router.js')
 const { Server }= require( 'socket.io')
 const ProductManager = require('./dao/ProductManager.js')
 const {createServer}= require( 'http')
 const { dbConnection } = require('./config/conectionDB.js')
 const ChatModel = require('./models/chat.model.js')
+const { auth } = require('./middleware/auth.js')
 //require('dotenv').config()
 
 const app = express()
@@ -29,13 +38,37 @@ app.use(express.urlencoded({extended:true}))
 app.use('/virtual' ,express.static(__dirname+'/public'))
 
 //cookies
-app.use(cookieParser())
+app.use(cookieParser()) //Palabra secreta
+
+
+//---Session---
+// const fileStore = FileStore(session) //instancia de la libreria
+
 // app.use(session({
+//     store: new fileStore({
+//         path: __dirname+'/sessions',
+//         ttl: 100, //milisegundos
+//         retries: 0, //cantidad de intentos q el servidor intentara conectar
+//     }),
 //     secret: 'secretCoder',
-//     resave: true,
-//     seveUninitialized: true
+//     resave: false,
+//     seveUninitialized: false
 // }))
 
+//---Session Mongo---
+app.use(session({
+    store: MongoStore.create({
+        mongoUrl: 'mongodb+srv://nicolaslarreburo:12qwaszxB1@cluster0.ahxowjc.mongodb.net/ecommerce?retryWrites=true&w=majority',
+        mongoOptions:{
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        },
+        ttl:15
+    }),
+    secret: 'secretCoder',
+    resave: false,
+    seveUninitialized: false
+}))
 
 //Handlebars
 app.engine('handlebars', handlebars.engine())
@@ -44,12 +77,15 @@ app.set('view engine','handlebars')
 //Handlebars
 
 
-//Router
+//RouterhomeRouter
+app.use('/', homeRouter)
 app.use('/api/user', usersRouter)
 app.use('/api/cart', cartsRouter)
 app.use('/api/products', productsRouter)
-app.use('/views',viewsRouter)
+app.use('/views', auth ,viewsRouter)
 app.use('/api/chat',chatRouter)
+app.use('/cookie', cookieRouter)
+app.use('/auth', authRouter)
 //Router
 
 httpServer.listen(PORT, err =>{

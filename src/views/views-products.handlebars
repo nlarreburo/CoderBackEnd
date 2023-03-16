@@ -1,5 +1,5 @@
 <div>
-    <div>
+    {{!-- <div>
         <p>Filtros</p>
         <label>Limit</label>
         <input id="limit-value" type="number" min="1" max="10">
@@ -15,7 +15,19 @@
             <input type="radio" name="asDesc" value="desc">
             Descandente
         </label>
+    </div> --}}
+    <div>
+        <h1>Bienvenido</h1>
+        <h3>{{user.name}}</h3>
+        <label>Rol: </label>
+        {{#if user.admin}}
+            <label>Admin</label>
+        {{else}}
+            <label>user</label>
+        {{/if}}
     </div>
+
+    </br>
 
     <p>Productos</p>
     <div>
