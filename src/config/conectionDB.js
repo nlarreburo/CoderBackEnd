@@ -1,18 +1,32 @@
+const MongoStore = require('connect-mongo')
 const {connect} = require('mongoose')
 
 const url = 'mongodb+srv://nicolaslarreburo:12qwaszxB1@cluster0.ahxowjc.mongodb.net/ecommerce?retryWrites=true&w=majority'
-
-const dbConnection = async () => {
-    return await connect(url, err =>{
-        if (err){
-            console.log('No se pudo conectar mongodb: ', err)
+let configObject = {
+    dbConnection : async () => {
+        try {
+            await connect(url)
+            console.log('DB connect')
+        } catch (error) {
+            console.log(error)
             process.exit()
         }
-        console.log('DB connect')
-
-    })
+    },
+    session: {
+        store: MongoStore.create({
+            mongoUrl: 'mongodb+srv://nicolaslarreburo:12qwaszxB1@cluster0.ahxowjc.mongodb.net/ecommerce?retryWrites=true&w=majority',
+            mongoOptions:{
+                useNewUrlParser: true,
+                useUnifiedTopology: true,
+            },
+            ttl:15
+        }),
+        secret: 'secretCoder',
+        resave: false,
+        seveUninitialized: false
+    }
 }
 
-module.exports = {dbConnection}
+module.exports = {configObject}
 
 //Creamos la conexion

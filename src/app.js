@@ -4,7 +4,14 @@ const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const FileStore = require('session-file-store')
 const MongoStore = require('connect-mongo')
-//---Session---
+
+//---PassPort---
+const passport =  require('passport')
+const { initPassport } = require('./config/passport.config.js')
+
+//---Mongo connect---
+const { configObject } = require('./config/conectionDB.js')
+
 const handlebars = require('express-handlebars')
 const homeRouter = require('./routes/home.router.js')
 const productsRouter = require('./routes/products.router.js')
@@ -17,21 +24,20 @@ const authRouter = require('./routes/auth.router.js')
 const { Server }= require( 'socket.io')
 const ProductManager = require('./dao/ProductManager.js')
 const {createServer}= require( 'http')
-const { dbConnection } = require('./config/conectionDB.js')
 const ChatModel = require('./models/chat.model.js')
 const { auth } = require('./middleware/auth.js')
+const { initializePassport } = require('./middleware/initialPassport.js')
+
 //require('dotenv').config()
 
 const app = express()
-
-dbConnection()
 
 const PORT = 8080 || process.env.PORT
 const httpServer = createServer(app)
 
 const productManager = new ProductManager(__dirname + '/routes/JSON/products.JSON')
 
-
+configObject.dbConnection()
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
@@ -40,35 +46,15 @@ app.use('/virtual' ,express.static(__dirname+'/public'))
 //cookies
 app.use(cookieParser()) //Palabra secreta
 
-
-//---Session---
-// const fileStore = FileStore(session) //instancia de la libreria
-
-// app.use(session({
-//     store: new fileStore({
-//         path: __dirname+'/sessions',
-//         ttl: 100, //milisegundos
-//         retries: 0, //cantidad de intentos q el servidor intentara conectar
-//     }),
-//     secret: 'secretCoder',
-//     resave: false,
-//     seveUninitialized: false
-// }))
-
 //---Session Mongo---
-app.use(session({
-    store: MongoStore.create({
-        mongoUrl: 'mongodb+srv://nicolaslarreburo:12qwaszxB1@cluster0.ahxowjc.mongodb.net/ecommerce?retryWrites=true&w=majority',
-        mongoOptions:{
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        },
-        ttl:15
-    }),
-    secret: 'secretCoder',
-    resave: false,
-    seveUninitialized: false
-}))
+app.use(session(configObject.session))
+
+
+//---PassPort---
+initPassport()  //clase 21 login
+initializePassport() // clase 22 github
+app.use(passport.initialize())
+app.use(passport.session())
 
 //Handlebars
 app.engine('handlebars', handlebars.engine())
@@ -85,7 +71,7 @@ app.use('/api/products', productsRouter)
 app.use('/views', auth ,viewsRouter)
 app.use('/api/chat',chatRouter)
 app.use('/cookie', cookieRouter)
-app.use('/auth', authRouter)
+app.use('/api/auth', authRouter)
 //Router
 
 httpServer.listen(PORT, err =>{
