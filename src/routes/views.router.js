@@ -1,23 +1,12 @@
 const { Router } = require('express')
+const { authorization } = require('../middleware/authorization.js')
 const ProductModel = require('../models/products.model.js')
-const ProductManagerMongo = require('../dao/ProductManagerMongo.js')
+const { passportCall } = require('../utils/pasportCall.js')
 
 const router = Router()
 
 
-// //GET http://localhost:8080/api/realtimeproducts/
-// router.get('/realtimeproducts', async (req, res) =>{
-//     const products = await productManager.getProducts()
-//     const {limit} = req.query
-//     if(limit) return res.send(products.slice(0, limit)) //Devuelve products hasta el indice [limit]
-    
-//     res.render('realtimeproducts', {
-//         products
-//     }) //Devuelve products completo
-
-// })
-
-router.get('/products', async (req,res) => {
+router.get('/products', passportCall('jwt'),authorization('admin'), async (req,res) => {
     try {
         const {page = 1, limit, sort} = req.query
         console.log(req.session.user)

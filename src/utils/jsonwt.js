@@ -24,5 +24,7 @@ const authToken = (req,res,next) => {
 }
 
 module.exports = {
-    PRIVATE_KEY
+    PRIVATE_KEY,
+    generateToken,
+    authToken
 }

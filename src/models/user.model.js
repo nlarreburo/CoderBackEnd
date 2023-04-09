@@ -14,10 +14,25 @@ const UserSchema = Schema({
     email:{
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        index: true
     },
     password:{
         type:String,
+    },
+    rol:{
+        type: String,
+        require: true,
+        enum: ['admin','user'],
+        default: 'user'
+    },
+    age:{
+        type: Number,
+        require: true
+    },
+    cart:{
+        type:String,
+        require:true
     }
 })
 

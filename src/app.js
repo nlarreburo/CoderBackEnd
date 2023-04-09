@@ -7,8 +7,9 @@ const MongoStore = require('connect-mongo')
 
 //---PassPort---
 const passport =  require('passport')
-const { initPassport } = require('./config/passport.config.js')
-
+const { initPassport } = require('./config/passport.config.js') //local
+const { initializePassport } = require('./middleware/initialPassport.js') //github
+const { initializePassportJWT } = require('./middleware/jwtPassport.js') // con token
 //---Mongo connect---
 const { configObject } = require('./config/conectionDB.js')
 
@@ -25,8 +26,8 @@ const { Server }= require( 'socket.io')
 const ProductManager = require('./dao/ProductManager.js')
 const {createServer}= require( 'http')
 const ChatModel = require('./models/chat.model.js')
-const { auth } = require('./middleware/auth.js')
-const { initializePassport } = require('./middleware/initialPassport.js')
+
+
 
 //require('dotenv').config()
 
@@ -53,6 +54,7 @@ app.use(session(configObject.session))
 //---PassPort---
 initPassport()  //clase 21 login
 initializePassport() // clase 22 github
+initializePassportJWT()
 app.use(passport.initialize())
 app.use(passport.session())
 
@@ -68,7 +70,7 @@ app.use('/', homeRouter)
 app.use('/api/user', usersRouter)
 app.use('/api/cart', cartsRouter)
 app.use('/api/products', productsRouter)
-app.use('/views', auth ,viewsRouter)
+app.use('/views',viewsRouter)
 app.use('/api/chat',chatRouter)
 app.use('/cookie', cookieRouter)
 app.use('/api/auth', authRouter)

@@ -1,6 +1,10 @@
 const { Router } = require('express')
 const passport = require('passport')
 const userModel = require('../models/user.model')
+const { generateToken } = require('../utils/jsonwt')
+const { initializePassportJWT,userJWT } = require('../middleware/jwtPassport')
+const { passportCall } = require('../utils/pasportCall')
+
 const router = Router()
 
 router.get('/login', async (req,res)=>{
@@ -14,26 +18,37 @@ router.get('/githubcallback', passport.authenticate('github', {failureRedirect:'
     res.redirect('/views/products')
 })
 
-router.post('/login', passport.authenticate('login', {failureRedirect:'/api/auth/faillogin'}), async (req,res)=>{
-    if(!req.user) return res.status(400).json({status: 'error', error: 'Credentials incorrect'})
-    
-    req.session.user = {
-        name: req.user.first_name,
-        last_name: req.user.last_name,
-        email: req.user.email,
-    }
-
-
-    res.status(200).send({
-        status: 'success',
-        payload: req.user,
-        message: 'Login correcto',
-    })
-
+//router.post('/login', passport.authenticate('login', {failureRedirect:'/api/auth/faillogin'}), async (req,res)=>{ //post login utilizando passport.config.js
+router.post('/login', passport.authenticate('login',), async (req,res)=>{
+     if(!req.user) return res.status(400).json({status: 'error', error: 'Credentials incorrect'})
+  
+     req.session.user = {
+         name: req.user.first_name,
+         last_name: req.user.last_name,
+         email: req.user.email,
+         rol: req.user.rol
+     }
+      const token = generateToken(req.session.user) //Genero token      
+      res.cookie('coderCookieToken', token, {
+          maxAge: 60*60*1000,
+          httpOnly: true
+      }).send({msg: 'logged in'})
 })
 
-router.get('/faillogin', async (req, res)=>{
-    res.status(400).json({error: 'failed login'})
+router.get('/current',passportCall('jwt'),async(req,res) => {
+    const token = req.cookies.coderCookieToken
+    const {name, last_name, email,rol} = req.user.user
+    console.log("token: ",token,"usuario:", name, last_name, email,rol);
+
+    res.status(200).render('current',{
+        token,
+        name,
+        last_name,
+        email,
+        rol
+    })
+
+
 })
 
 
@@ -85,23 +100,3 @@ router.get('/logout', (req,res)=>{
 
 module.exports = router
 
-
-// router.post('/login', (req,res)=>{
-//     const data = req.body
-//     console.log(data)
-//     res.cookie('nombre','valor',{maxAge: 1000000}).send({
-//         status: "success",
-//         message: "Cookie creada"
-//     })
-// })
-
-// router.post('/login', (req,res)=>{
-//     const {username,password} = req.body
-//     if (username != 'admin' || password != 'admin'){
-//         return res.send({msg:'fail login'})
-//     } else {
-//         req.session.user = username
-//         req.session.admin = true
-//         res.send({msg:'login ok'})
-//     }
-// })
