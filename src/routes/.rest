@@ -1,0 +1,11 @@
+GET http://localhost:8080/user/current
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE2Nzk2MTYyODR9.3Z8c3X-fKWd41PsBPOJ0k-lafdkrgyCLLQvW3gL6-6I
+
+###
+POST http://localhost:8080/user/login
+Content-Type: application/json
+
+{
+    "email":"n1@gmail.com",
+    "password": "1234"
+}
