@@ -1,0 +1,14 @@
+.env.development
+PORT=8080
+MONGO_URL=mongodb+srv://nicolaslarreburo:12qwaszxB1@cluster0.ahxowjc.mongodb.net/ecommerce?retryWrites=true&w=majority
+ADMIN_NAME=adminCoder 
+ADMIN_PASSWORD=adminCoder1
+PERSISTENCE=MONGO
+
+
+.env.production
+PORT=3000
+MONGO_URL=mongodb://localhost:27017/
+ADMIN_NAME=admin
+ADMIN_PASSWORD=admin
+PERSISTENCE=MONGO
