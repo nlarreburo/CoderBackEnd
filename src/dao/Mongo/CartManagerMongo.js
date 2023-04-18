@@ -1,4 +1,4 @@
-const CartsModel = require('../models/carts.model.js')
+const CartsModel = require('../../models/carts.model.js')
 
 
 class CartManagerMongo {
@@ -18,7 +18,6 @@ class CartManagerMongo {
 
     //Buscar por id
     getCartsById = async(cid) =>{
-        //const cart = await CartsModel.find({_id:cid})
         const cart = await CartsModel.findById({_id:cid}).populate('products.product').lean()
         //console.log(JSON.stringify(cart,null,2));
         return cart

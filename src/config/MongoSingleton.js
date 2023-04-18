@@ -12,6 +12,7 @@ class MongoSingleton {
     }
 
     static getInstance(){
+        console.log("entro");
         if (this.#instance) {
             console.log('Ya está conectada')
             return this.#instance

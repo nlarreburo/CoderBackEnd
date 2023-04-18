@@ -2,7 +2,7 @@ const handleSubmit = (evt) =>{
     evt.preventDefault()
     let email = document.querySelector('input[name="email"]').value
     let password = document.querySelector('input[name="password"]').value
-    fetch('/api/auth/login',{
+    fetch('/user/login',{
         method: 'POST',
         headers: {
             'Content-Type':'application/json'

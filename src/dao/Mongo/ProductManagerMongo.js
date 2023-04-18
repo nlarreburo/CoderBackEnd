@@ -1,4 +1,4 @@
-const ProductModel = require('../models/products.model.js')
+const ProductModel = require('../../models/products.model.js')
 
 class ProductManagerMongo{
     constructor(){

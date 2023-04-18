@@ -2,7 +2,7 @@ const passport = require('passport')
 const local = require('passport-local')
 const userModel = require('../models/user.model')
 const { createHash, isValidPassword } = require('../utils/bcryptPass')
-const CartManagerMongo = require('../dao/CartManagerMongo.js')
+const CartManagerMongo = require('../dao/Mongo/CartManagerMongo.js')
 
 const LocalStrategy = local.Strategy
 const cartManagerMongo = new CartManagerMongo()
@@ -23,7 +23,6 @@ const initPassport = () =>{
                 }
                 //Obtiene un id de cart luego de confirmar que no existe el usuario
                 var cart = await cartManagerMongo.addCart()
-                console.log(cart._id)
                 // Crear usuario
                 let newUser = {
                     first_name,
