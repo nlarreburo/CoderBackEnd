@@ -9,7 +9,6 @@ const router = Router()
 router.get('/products', passportCall('jwt'),authorization('admin'), async (req,res) => {
     try {
         const {page = 1, limit, sort} = req.query
-        console.log(req.session.user)
         var limitNum = Number(limit)
         if(!limitNum || limitNum > 10){limitNum = 10}
         if(sort){

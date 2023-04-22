@@ -5,9 +5,9 @@ class ProductManagerMongo{
 
     }
     //Devolver todos los productos un producto
-    getProducts = async() =>{
-        const products = ProductModel.find() //Devuelve todos los productos
-        return products
+    getProducts = async(filter,option) =>{
+        return await ProductModel.paginate(filter,option) //Devuelve todos los productos
+         
     }
 
 

@@ -7,7 +7,8 @@ const { authorization } = require('../middleware/authorization.js')
 class ProductRouter extends Router {
     init(){
         //Obtener todos los productos
-        this.get('/',['PUBLIC'], passportCall('jwt'),authorization('admin'),productsController.getProducts)
+        //passportCall('jwt'),authorization('admin'),
+        this.get('/',['PUBLIC'], productsController.getProducts)
 
         //Buscar por id
         this.get('/:pid',['PUBLIC'],productsController.getProductsById)

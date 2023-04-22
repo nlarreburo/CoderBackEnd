@@ -4,20 +4,32 @@ class UserRepositories{
         this.dao = dao
     }
     getAllUsers = async() =>{
-        let result = this.dao.getAllUsers()
-        return result
+        try {
+            let result = this.dao.getAllUsers()
+            return result
+        } catch (error) {
+            new Error(error)
+        }
     }
 
     //Devolver un usuario por id
     getIdUser= async(uid) =>{
-        let result = this.dao.getIdUser(uid)
-        return result
+        try {
+            let result = this.dao.getIdUser(uid)
+            return result
+        } catch (error) {
+            new Error(error)
+        }
     }
 
     //Crear usuario --- register
     createUser = async() => {
-        let result = this.dao.createUser()
-        return result
+        try {        
+            let result = this.dao.createUser()
+            return result
+        } catch (error) {
+            new Error(error)
+        }
     }
 
 }

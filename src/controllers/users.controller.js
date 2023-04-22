@@ -1,6 +1,5 @@
 const {request} = require('express')
 const {userService} = require('../dao/services/service.js')
-const { generateToken } = require('../utils/jsonwt.js')
 
 class UsersController {
     getAllUsers = async (req=request,res)=>{
@@ -20,29 +19,29 @@ class UsersController {
         })
     }
 
-    renderRegister = async (req=request,res)=>{
-        res.status(200).render('register')
-    }
-
-    userLogin = async (req=request,res)=>{
-        if(!req.user) return res.status(400).json({status: 'error', error: 'Credentials incorrect'})
-  
-        req.session.user = {
-            name: req.user.first_name,
-            last_name: req.user.last_name,
-            email: req.user.email,
-            rol: req.user.rol
+    updateUser = async (req=request,res)=>{
+        const {uid} = req.params
+        let { first_name, last_name, email, password, age}  = request.body
+        if(!first_name || !last_name || !email || !password || !age){
+            return res.status(400).send({ message: 'Che pasar todos los datos'})
         }
-        const token = generateToken(req.session.user) //Genero token      
-        res.cookie('coderCookieToken', token, {
-            maxAge: 60*60*1000,
-            httpOnly: true
-        }).send({msg: 'logged in'})
+        let result = await userService.updateUser(uid,first_name)
+        response.status(201).send({ 
+            msg: 'success',
+            result : result
+        })
+
     }
 
-    renderLogin = async (req=request,res)=>{
-        res.status(200).render('login')
+    deleteUser = async(req,res) => {
+        const {uid} = req.params
+        await userService.deleteUser(uid)
+        res.status(200).send({ 
+            status: 'success',
+            result: true
+        })
     }
+
 }
 
 module.exports = new UsersController()

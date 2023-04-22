@@ -2,29 +2,49 @@ class ProductRepositories{
     constructor(dao){
         this.dao = dao
     }
-    getProducts = async() =>{
-        let result = this.dao.getProducts()
-        return result
+    getProducts = async(filter,option) =>{
+        try { 
+            let result = this.dao.getProducts(filter,option)
+            return result
+        } catch (error) {
+            new Error(error)
+        }
     }
 
     getProductsById= async(uid) =>{
-        let result = this.dao.getProductsById(uid)
-        return result
+        try { 
+            let result = this.dao.getProductsById(uid)
+            return result
+        } catch (error) {
+            new Error(error)
+        }
     }
 
     addProduct = async() => {
-        let result = this.dao.addProduct()
-        return result
+        try { 
+            let result = this.dao.addProduct()
+            return result
+        } catch (error) {
+            new Error(error)
+        }
     }
 
     updateProduct = async() => {
-        let result = this.dao.updateProduct()
-        return result
+        try { 
+            let result = this.dao.updateProduct()
+            return result
+        } catch (error) {
+            new Error(error)
+        }
     }
 
     deleteProduct = async() => {
-        let result = this.dao.deleteProduct()
-        return result
+        try { 
+            let result = this.dao.deleteProduct()
+            return result
+        } catch (error) {
+            new Error(error)
+        }
     }
 
 }

@@ -23,17 +23,23 @@ class UserManagerMongo {
         }
     }
 
-    //Crear usuario --- register
-    createUser = async() => {
+    //Actualizar usuario
+    updateUser = async(uid,first_name) =>{
         try {
-            
+            return await UserModel.updateOne({_id: uid}, { first_name })
         } catch (error) {
-            
+            Error(error)
         }
     }
-    //Actualizar usuario
 
     //Borrar usuario
+    deleteUser = async(uid) => {
+        try {
+            return await UserModel.deleteOne({_id: uid})
+        } catch (error) {
+            Error(error)
+        }
+    }
 
 }
 

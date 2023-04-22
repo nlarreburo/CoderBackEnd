@@ -14,6 +14,8 @@ const handlebars = require('express-handlebars')
 //--Router--
 const { router } = require('./routes')
 const {Server: HttpServer}= require( 'http')
+const { createTransport } = require('nodemailer')
+const twilio = require('twilio')
 
 // const { initializePassport } = require('./middleware/initialPassport.js') //github
 // const homeRouter = require('./routes/home.router.js')
@@ -55,22 +57,41 @@ app.use(session(configObject.session))
 app.engine('handlebars', handlebars.engine())
 app.set('views',__dirname + '/views')
 app.set('view engine','handlebars')
-//RouterhomeRouter
 app.use(router)
 
+//------------------------------------------
 
-//router.use('/user',userRouter.getRouter())
-// app.use('/', homeRouter)
-// app.use('/api/user', usersRouter)
-// app.use('/api/cart', cartsRouter)
-// app.use('/api/products', productsRouter)
-// app.use('/views',viewsRouter)
-// app.use('/api/chat',chatRouter)
-// app.use('/cookie', cookieRouter)
-// app.use('/api/auth', authRouter)
-// app.use('/fork',forkRouter)
+// const twilio_account_sid = process.env.TWILIO_ACCOUNT_SID
+// const twilio_auth_token = process.env.TWILIO_AUTH_TOKEN
+// const twilio_phone_num =  process.env.TWILIO_PHONE_NUMBER
 
+// const cliente = twilio(twilio_account_sid, twilio_auth_token)
+// app.get('/api/sms',async(req,res)=>{
+//     try {
+//         await cliente.messages.create({
+//             body : 'esto es un wha',
+//             from:'whatsapp:+14155238886',
+//             to:`whatsapp:${process.env.NUMBER_MIO}`
+//         })
+//     } catch (error) {
+//         console.log(error);
+//     }
+// })
 
+// const transport = createTransport({
+//     service: 'gmail',
+//     port: 578,
+//     auth: {
+//         user:  process.env.TEST_MAIL_ADMIN,
+//         pass: process.env.TEST_MAIL_PASS
+//     }
+// })
+
+// app.get('/api/mail', async(req,res) =>{
+//     let result = await transport.sendMail({
+
+//     })
+// })
 
 module.exports = {
     httpServer
