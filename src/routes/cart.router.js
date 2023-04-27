@@ -1,4 +1,5 @@
 const cartController = require("../controllers/cart.controller")
+const { passportCall } = require("../utils/pasportCall")
 const Router  = require("./router")
 
 
@@ -8,7 +9,7 @@ class CartRouter extends Router {
         this.post('/',['PUBLIC'],cartController.addCart)
 
         //Agregar al carrito
-        this.post('/:cid/product/:pid',['PUBLIC'],cartController.updateCart)
+        this.post('/:cid/product/:pid',['PUBLIC'],passportCall('jwt'),cartController.updateCart)
 
         //Borrar prod del carrito
         this.delete('/:cid/product/:pid',['PUBLIC'],cartController.deletProdCart)
@@ -21,6 +22,9 @@ class CartRouter extends Router {
 
         //Borrar carrito
         this.delete('/:cid',['PUBLIC'],cartController.deleteCart)
+
+        //Generar ticket
+        this.post('/:cid/purchase',['PUBLIC'],passportCall('jwt'),cartController.createTicket)
     }
 }
 

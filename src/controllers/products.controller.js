@@ -83,7 +83,6 @@ class ProductsController {
     
             const {docs,totalPages,hasPrevPage,hasNextPage,nextPage,prevPage} = await productService.getProducts(filter,option)
             const products = docs
-            console.log(products);
             var prevLink = null
             var nextLink = null
             if(hasPrevPage){prevLink = `http://localhost:8080/views/products?page=` + prevPage}
@@ -100,7 +99,9 @@ class ProductsController {
                 prevLink,
                 nextLink
             }
-            res.json(formatObj)
+            //res.json(formatObj)
+            //console.log(req.session);
+            
             res.status(200).render('views-products',{
                 products,
                 hasNextPage,

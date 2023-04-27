@@ -3,9 +3,6 @@ const socket = io()
 
 let buttomLimit = document.getElementById('buttomLimit')
 
-// buttomLimit.addEventListener('click', () =>{
-//     window.location.href = `http://localhost:8080/views/products?page=1&limit=` + limitValue.value
-// })
 
 function limitButtom(page){
     let limitValue = document.getElementById('limit-value')

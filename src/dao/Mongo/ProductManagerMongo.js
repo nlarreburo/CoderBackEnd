@@ -13,7 +13,7 @@ class ProductManagerMongo{
 
     //Buscar producto por su id
     getProductsById = async(pid) => {
-        const product = await ProductModel.find({id:pid})
+        const product = await ProductModel.find({_id:pid})
         return product
     }
     
@@ -57,37 +57,42 @@ class ProductManagerMongo{
 
     //Actualizar producto
     updateProduct = async (pid,updProd) => {
-        for (let key in updProd){
-            if(key!=pid && updProd[key]!=''){
-                switch(key){
-                    case "title":
-                        await ProductModel.updateOne({id:pid},{$set:{title:updProd[key]}})
-                        break
-                    case "description":
-                        await ProductModel.updateOne({id:pid}, {$set:{description:updProd[key]}})
-                        break
-                    case "price":
-                        await ProductModel.updateOne({id:pid}, {$set:{price:updProd[key]}})
-                        break
-                    case "thumbnail":
-                        await ProductModel.updateOne({id:pid}, {$set:{price:updProd[key]}})
-                        break
-                    case "code":
-                        await ProductModel.updateOne({id:pid}, {$set:{price:updProd[key]}})
-                        break
-                    case "stock":
-                        await ProductModel.updateOne({id:pid}, {$set:{price:updProd[key]}})
-                        break
-                }
-            }
+        try {
+            await ProductModel.updateOne({_id:pid},{$set:updProd})
+        } catch (error) {
+            console.log(error);
         }
+        // for (let key in updProd){
+        //     if(key!=pid && updProd[key]!=''){
+        //         switch(key){
+        //             case "title":
+        //                 await ProductModel.updateOne({id:pid},{$set:{title:updProd[key]}})
+        //                 break
+        //             case "description":
+        //                 await ProductModel.updateOne({id:pid}, {$set:{description:updProd[key]}})
+        //                 break
+        //             case "price":
+        //                 await ProductModel.updateOne({id:pid}, {$set:{price:updProd[key]}})
+        //                 break
+        //             case "thumbnail":
+        //                 await ProductModel.updateOne({id:pid}, {$set:{thumbnail:updProd[key]}})
+        //                 break
+        //             case "code":
+        //                 await ProductModel.updateOne({id:pid}, {$set:{code:updProd[key]}})
+        //                 break
+        //             case "stock":
+        //                 await ProductModel.updateOne({id:pid}, {$set:{stock:updProd[key]}})
+        //                 break
+        //         }
+        //     }
+        // }
     }
 
     //Borrar product
     deleteProduct = async(pid) =>{
         const product = await this.getProductsById(pid)
         if (product){
-            await ProductModel.deleteOne({id:pid})
+            await ProductModel.deleteOne({_id:pid})
             return product
         }
     }

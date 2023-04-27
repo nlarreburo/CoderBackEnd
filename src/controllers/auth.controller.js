@@ -1,5 +1,6 @@
 const {request} = require('express')
 const { generateToken } = require('../utils/jsonwt.js')
+const UserDTO = require('../DTO/user.dto.js')
 
 class AuthController {
     
@@ -43,6 +44,22 @@ class AuthController {
         try {
             res.clearCookie("coderCookieToken")
             res.status(200).redirect('/auth/login')
+        } catch (error) {
+            Error(error)
+        }
+    }
+
+    authCurrent = async(req=request,res)=>{
+        try {
+            const {name,last_name,email,rol} =  req.user.user
+            const token =  req.cookies.coderCookieToken
+            res.status(200).render("current",{
+                token,
+                name,
+                last_name,
+                email,
+                rol
+            })
         } catch (error) {
             Error(error)
         }

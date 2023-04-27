@@ -26,8 +26,8 @@ class ClassRouter {
 
     generateCustomResponses(req,res,next){
         res.sendSuccess = payload => res.send({status: 'success', payload})
-        res.sendServerError = error => res.send({status: 'erroraa', error})
-        res.sendUserError = error => res.send({status: 'erroraa', error})
+        res.sendServerError = error => res.send({status: 'errora', error})
+        res.sendUserError = error => res.send({status: 'errora', error})
         next()
     }
 
@@ -36,7 +36,7 @@ class ClassRouter {
         if(policies[0]=== 'PUBLIC') return next() 
         const authHeaders = req.headers.authorization
         console.log("auto:",authHeaders);
-        if (!authHeaders) return res.status(401).send({status: 'erroraa', error: 'Unauthorized'})
+        if (!authHeaders) return res.status(401).send({status: 'errora', error: 'Unauthorized'})
         const token  = authHeaders.split(' ')[1]
         let user = jwt.verify(token, 'CoderSecretClassRouter')
         if(!policies.includes(user.role.toUpperCase())) return res.status(401).send({status: 'error', error: 'No permissions'})

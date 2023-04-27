@@ -3,7 +3,6 @@ const {Schema, model} = require('mongoose')
 const userCollection = 'Carts'
 
 const UserSchema = Schema({
-
     products: {
         type: [{
             product: {

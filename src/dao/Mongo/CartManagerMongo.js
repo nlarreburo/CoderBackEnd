@@ -1,4 +1,5 @@
 const CartsModel = require('../../models/carts.model.js')
+const TicketModel = require('../../models/ticket.model.js')
 
 
 class CartManagerMongo {
@@ -38,8 +39,8 @@ class CartManagerMongo {
     deletProdCart = async(cid,pid) =>{
         let cart = await CartsModel.findById({_id:cid})
         let msg = ""
-        if((cart.products.find(p => p.product == pid))) {
-            const newCart = cart.products.filter(p => p.product != pid)
+        if((cart.products.find(p => p.product == String(pid)))) {
+            const newCart = cart.products.filter(p => p.product != String(pid))
             await CartsModel.updateOne({_id:cid},{$set:{products:newCart}})
             msg = "El producto se elimino del carrito"
         }else{
@@ -76,6 +77,18 @@ class CartManagerMongo {
         const cart = await CartsModel.findById({_id:cid})
         if (cart){
             await CartsModel.deleteOne({_id:cid})
+        }
+    }
+
+    ticketCart = async(amount,purchaser) => {
+        try {
+            const newTicker = TicketModel.create({
+                amount,
+                purchaser
+            })
+            return newTicker
+        } catch (error) {
+            console.log(error)
         }
     }
 

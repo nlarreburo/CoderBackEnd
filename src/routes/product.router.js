@@ -6,21 +6,23 @@ const { authorization } = require('../middleware/authorization.js')
 
 class ProductRouter extends Router {
     init(){
+        //passportCall('jwt')    ->    verificar usuario
+        //authorization('admin') ->    verificar admin
+        
         //Obtener todos los productos
-        //passportCall('jwt'),authorization('admin'),
         this.get('/',['PUBLIC'], productsController.getProducts)
 
         //Buscar por id
         this.get('/:pid',['PUBLIC'],productsController.getProductsById)
 
         //Agregar products
-        this.post('/',['PUBLIC'],productsController.addProduct)
+        this.post('/',['PUBLIC'],passportCall('jwt'),authorization('admin'),productsController.addProduct)
         
         //Update products
-        this.put('/:pid',['PUBLIC'],productsController.updateProduct)
+        this.put('/:pid',['PUBLIC'],passportCall('jwt'),authorization('admin'),productsController.updateProduct)
 
         //Delete products
-        this.delete('/:pid',['PUBLIC'],productsController.deleteProduct)
+        this.delete('/:pid',['PUBLIC'],passportCall('jwt'),authorization('admin'),productsController.deleteProduct)
     }
 }
 

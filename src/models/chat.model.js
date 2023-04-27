@@ -1,12 +1,12 @@
 const {Schema, model} = require('mongoose')
 
-const userCollection = 'Chat'
+const chatCollection = 'Chat'
 
-const UserSchema = Schema({
+const ChatSchema = Schema({
     mensajes:{
         type:Array,
         required:true
     }
 })
 
-module.exports = model(userCollection, UserSchema)
+module.exports = model(chatCollection, ChatSchema)

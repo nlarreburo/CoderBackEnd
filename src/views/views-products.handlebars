@@ -1,21 +1,4 @@
 <div>
-    {{!-- <div>
-        <p>Filtros</p>
-        <label>Limit</label>
-        <input id="limit-value" type="number" min="1" max="10">
-        <button name="buttomLimit" id="buttomLimit" onclick="limitButtom({{page}})">Aplicar</button>
-    </div>
-    <div>
-        <label>Sort</label>
-        <label>
-            <input type="radio" name="asDesc" value="asc">
-            Ascendente
-        </label>
-        <label>
-            <input type="radio" name="asDesc" value="desc">
-            Descandente
-        </label>
-    </div> --}}
     <div>
         <h1>Bienvenido</h1>
         <h3>{{user.name}}</h3>
@@ -39,11 +22,11 @@
     <br>
     <div>
         {{#if hasPrevPage}}
-            <a href="/views/products?page={{prevPage}}"><button>Anterior</button></a>
+            <a href="/product?page={{prevPage}}"><button>Anterior</button></a>
         {{/if}}
         <label>{{this.page}}</label>
         {{#if hasNextPage}}
-            <a href="/views/products?page={{nextPage}}"><button>Siguiente</button></a>
+            <a href="/product?page={{nextPage}}"><button>Siguiente</button></a>
         {{/if}}
     </div>
 </div>

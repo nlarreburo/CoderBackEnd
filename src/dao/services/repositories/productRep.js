@@ -11,9 +11,9 @@ class ProductRepositories{
         }
     }
 
-    getProductsById= async(uid) =>{
+    getProductsById= async(pid) =>{
         try { 
-            let result = this.dao.getProductsById(uid)
+            let result = this.dao.getProductsById(pid)
             return result
         } catch (error) {
             new Error(error)
@@ -29,18 +29,18 @@ class ProductRepositories{
         }
     }
 
-    updateProduct = async() => {
+    updateProduct = async(pid,updProd) => {
         try { 
-            let result = this.dao.updateProduct()
+            let result = this.dao.updateProduct(pid,updProd)
             return result
         } catch (error) {
             new Error(error)
         }
     }
 
-    deleteProduct = async() => {
+    deleteProduct = async(pid) => {
         try { 
-            let result = this.dao.deleteProduct()
+            let result = this.dao.deleteProduct(pid,updProd)
             return result
         } catch (error) {
             new Error(error)

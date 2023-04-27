@@ -1,6 +1,7 @@
 const passport = require("passport")
 const authController = require("../controllers/auth.controller")
 const Router  = require("./router")
+const { passportCall } = require("../utils/pasportCall")
 
 class AuthRouter extends Router {
     init(){
@@ -14,6 +15,8 @@ class AuthRouter extends Router {
         this.post('/login', ["PUBLIC"],passport.authenticate('login'),authController.authLogin)
         //Logout
         this.get('/logout',["PUBLIC"],authController.authLogout)
+        //current
+        this.get('/current',["PUBLIC"],passportCall('jwt'),authController.authCurrent)
     }
 }
 

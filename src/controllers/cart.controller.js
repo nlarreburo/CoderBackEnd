@@ -1,9 +1,9 @@
 const { request } = require("express");
-const { cartService } = require("../dao/services/service.js");
+const { cartService, productService } = require("../dao/services/service.js");
 
 class CartController {
     //Crear carrito
-    addCart = async(req=request,res) =>{
+    addCart = async(req,res) =>{
         const cart = await cartService.addCart()
         res.status(200).json({
         msg: 'Carrito creado',
@@ -12,7 +12,7 @@ class CartController {
     }
 
     //Buscar por id
-    getCartsById= async(req=request,res) =>{
+    getCartsById= async(req,res) =>{
         const {cid} = req.params
         const cart = (await cartService.getCartsById(String(cid))).products
         const newcart=cart.map(p => p.product)
@@ -22,7 +22,7 @@ class CartController {
     }
 
     //Agregar prod al carrito
-    updateCart = async(req=request,res) => {
+    updateCart = async(req,res) => {
         const {cid, pid} = req.params
         await cartService.updateCart(String(cid),String(pid))
         res.status(200).json({
@@ -33,7 +33,7 @@ class CartController {
     }
 
     //borrar producto del carrito
-    deletProdCart = async(req=request,res) => {
+    deletProdCart = async(req,res) => {
         const {cid, pid} = req.params
         const msg = await cartService.deletProdCart(String(cid),String(pid))
         res.status(200).json({
@@ -44,7 +44,7 @@ class CartController {
     }
 
     //Actualizar quantity
-    quantityProdCart = async(req=request,res) => {
+    quantityProdCart = async(req,res) => {
         const {cid, pid} = req.params
         const {quantity} = req.body
         const msg = await cartService.quantityProdCart(String(cid),String(pid),Number(quantity))
@@ -56,7 +56,7 @@ class CartController {
     }
 
     //Borrar carrito
-    deleteCart = async(req=request,res) => {
+    deleteCart = async(req,res) => {
         const {cid} = req.params
         const cart = await cartService.deleteCart(String(cid))
         if(!cart){
@@ -67,6 +67,48 @@ class CartController {
                 msg: 'Error'})
             }
     }
+
+    //Crear ticket
+    createTicket = async(req,res) => {
+        const {cid} = req.params
+        let totalPrice = 0
+        const cart = await cartService.getCartsById(String(cid))
+        if(!cart) return res.status(401).send({
+            status: 'error',
+            error: cart
+        })
+
+        let productsNotPutchased = []
+        for (const item of cart.products){
+            const productStock = item.product.stock
+            const quantity = item.quantity
+            if (quantity <= productStock){
+                let newStock = Number(productStock - quantity)
+                await productService.updateProduct(item.product._id,{stock: newStock})
+                totalPrice += (quantity * item.product.price)
+            } else {
+                productsNotPutchased.push(item.product._id)
+            }
+        }
+        let ticket = await cartService.ticketCart(totalPrice,req.session.user.email)
+        if (productsNotPutchased.length > 0) {
+            let deletProd = cart.products.filter(item => !productsNotPutchased.includes(item.product._id))
+            deletProd.forEach(async element => {
+                await  cartService.deletProdCart(cid,element.product._id)               
+            })
+        } else {
+            let deletCart = cart.products
+            for (let i = 0; i <= deletCart.length; i++) {
+                await deletCart.forEach(async element =>  { 
+                    await cartService.deletProdCart(cid,element.product._id)
+                })
+            }
+        }
+        res.status(200).json({
+            ticket
+        })
+    }
+
 }
 
 module.exports = new CartController()
