@@ -20,22 +20,8 @@ class ProductManagerMongo{
 
     //Agregar un producto
     addProduct = async(title,description,price,thumbnail,code,stock) =>{
-        //Comprobamos que todos los campos esten completos
-        if(!title || !description || !price || !thumbnail || !code || !stock){
-            return console.log("Ingresar todos los datos\n");
-        }
-        try {
-            
-            //Buscamos el ultimo id
-            var pid = ((await ProductModel.find({},{id:1,_id:0}).sort({id:-1}).limit(1)).map(doc => doc.id))[0]
-            if(pid){
-                //Sumamos al ultimo id
-                var id = pid + 1
-            }else{
-                //Creamos el primer id
-                var id = 1
-            }
 
+        try {
             //Creamos el product
             let product = await ProductModel.create({
                 title,
@@ -44,8 +30,7 @@ class ProductManagerMongo{
                 thumbnail,
                 code,
                 stock,
-                "status":true,
-                id
+                "status":true
             })
 
             return product

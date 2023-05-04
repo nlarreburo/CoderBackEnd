@@ -29,11 +29,6 @@ const UserSchema = Schema({
             type:Number,
             required: true
         },
-        id:{
-            type:Number,
-            required:true,
-            unique:true
-        },
         status:{
             type:Boolean,
             required:true

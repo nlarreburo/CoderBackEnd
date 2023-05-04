@@ -10,7 +10,7 @@ class AuthRouter extends Router {
         //Login render
         this.get('/login',["PUBLIC"],authController.renderLogin)
         //Register 
-        this.post('/register',["PUBLIC"],passport.authenticate('register', {failureRedirect:'/api/auth/failregister'}),authController.renderLogin)
+        this.post('/register',["PUBLIC"],passport.authenticate('register'),authController.renderLogin)
         //Login
         this.post('/login', ["PUBLIC"],passport.authenticate('login'),authController.authLogin)
         //Logout

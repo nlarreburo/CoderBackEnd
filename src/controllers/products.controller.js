@@ -1,15 +1,10 @@
 const {request} = require('express')
 const {productService} = require('../dao/services/service.js')
+const CustomError = require('../Errors/CustomError.js')
+const { generateProductsErrorInfo } = require('../Errors/info.js')
+const EErrors = require('../Errors/enum.js')
 
 class ProductsController {
-    // getProducts = async(req=request,res)=>{
-    //     const products = await productService.getProducts()
-    //     console.log(products);
-    //     res.status(200).json({
-    //         msg:'Productos',
-    //         products
-    //     })
-    // }
 
     getProductsById= async(req=request,res) =>{
         const {pid} = req.params
@@ -20,18 +15,34 @@ class ProductsController {
         })
     }
 
-    addProduct = async(req=request,res) => {
-        const {title,description,price,thumbnail,code,stock} = req.body  
-        const prod = await productService.addProduct(title,description,price,thumbnail,code,stock)
-        if(prod){
-            res.status(201).send({
+    addProduct = async(req=request,res,done) => {
+        const {title,description,price,thumbnail,code,stock} = req.body 
+        try {
+            if(!title || !description || !price || !thumbnail || !code || !stock){
+                CustomError.createError({
+                    name: 'Product Creation error',
+                    cause: generateProductsErrorInfo({
+                        title,
+                        description,
+                        price,
+                        thumbnail,
+                        code,
+                        stock
+                    }),
+                    message: 'Error tring to create Product',
+                    code: EErrors.INVALID_TYPES_ERROR
+                })
+            }
+            const prod = await productService.addProduct(title,description,price,thumbnail,code,stock)
+            
+            res.status(200).send({
                 msg: 'success',
                 prod
             })
-        } else {
-            res.status(400).send({
-                msg: 'error'
-            })
+
+        } catch (error) {
+            console.log(error.cause)
+            done(error)
         }
     }
 
@@ -99,9 +110,7 @@ class ProductsController {
                 prevLink,
                 nextLink
             }
-            //res.json(formatObj)
-            //console.log(req.session);
-            
+
             res.status(200).render('views-products',{
                 products,
                 hasNextPage,

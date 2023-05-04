@@ -16,7 +16,7 @@ class ProductRouter extends Router {
         this.get('/:pid',['PUBLIC'],productsController.getProductsById)
 
         //Agregar products
-        this.post('/',['PUBLIC'],passportCall('jwt'),authorization('admin'),productsController.addProduct)
+        this.post('/',['PUBLIC'],productsController.addProduct)
         
         //Update products
         this.put('/:pid',['PUBLIC'],passportCall('jwt'),authorization('admin'),productsController.updateProduct)

@@ -13,6 +13,7 @@ httpServer.listen(PORT, err => {
     console.log(`Escuchando en el puerto: ${PORT}`)
 })
 
+
 const io = new Server(httpServer)
 const mensajes = []
 let connectedClients = []

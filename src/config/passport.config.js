@@ -4,19 +4,38 @@ const userModel = require('../models/user.model')
 const { createHash, isValidPassword } = require('../utils/bcryptPass')
 const CartManagerMongo = require('../dao/Mongo/CartManagerMongo.js')
 const UserDTO = require('../DTO/user.dto')
+const CustomError = require('../Errors/CustomError')
+const {generateUserErrorInfo} = require('../Errors/info')
+const EErrors = require('../Errors/enum')
 
 const LocalStrategy = local.Strategy
 const cartManagerMongo = new CartManagerMongo()
 
 const initPassport = () =>{
     passport.use('register',new LocalStrategy(
+
         {
             passReqToCallback: true, //acceso a la request
             usernameField: 'email',
+            
         },
         async (req, username, password, done) => {
             const {first_name, last_name, email,age} = req.body
             try{
+                if(!first_name ||  !last_name ||  !email || !age){
+                    CustomError.createError({
+                        name: 'User Creations error',
+                        cause: generateUserErrorInfo({
+                            first_name,
+                            last_name,
+                            email,
+                            age
+                        }),
+                        message: 'Error trying to create User',
+                        code: EErrors.INVALID_TYPES_ERROR
+                    })
+                }
+
                 let user = await userModel.findOne({email: username})
                 if (user){
                     console.log('usuario existente')
@@ -32,7 +51,8 @@ const initPassport = () =>{
                 let result = await userModel.create(newUser)
                 return done(null, result)
             } catch (error){
-                return done('Error al obtener el usuario: '+error)
+                console.log(error.cause)
+                done(error)
             }
         }
     ))
