@@ -20,9 +20,9 @@ class ProductRepositories{
         }
     }
 
-    addProduct = async() => {
+    addProduct = async(title,description,price,thumbnail,code,stock) => {
         try { 
-            let result = this.dao.addProduct()
+            let result = this.dao.addProduct(title,description,price,thumbnail,code,stock)
             return result
         } catch (error) {
             new Error(error)

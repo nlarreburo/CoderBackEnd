@@ -3,6 +3,7 @@ const {productService} = require('../dao/services/service.js')
 const CustomError = require('../Errors/CustomError.js')
 const { generateProductsErrorInfo } = require('../Errors/info.js')
 const EErrors = require('../Errors/enum.js')
+const ProductDTO = require('../DTO/products.dto.js')
 
 class ProductsController {
 
@@ -33,14 +34,15 @@ class ProductsController {
                     code: EErrors.INVALID_TYPES_ERROR
                 })
             }
-            const prod = await productService.addProduct(title,description,price,thumbnail,code,stock)
-            
+            const prodDTO = new ProductDTO(title,description,price,thumbnail,code,stock)
+            const prod = await productService.addProduct(prodDTO.title,prodDTO.description,prodDTO.price,prodDTO.thumbnail,prodDTO.code,prodDTO.stock)
             res.status(200).send({
                 msg: 'success',
                 prod
             })
 
         } catch (error) {
+            
             console.log(error.cause)
             done(error)
         }
