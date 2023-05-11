@@ -35,14 +35,14 @@ class ProductsController {
                 })
             }
             const prodDTO = new ProductDTO(title,description,price,thumbnail,code,stock)
+            console.log(prodDTO);
             const prod = await productService.addProduct(prodDTO.title,prodDTO.description,prodDTO.price,prodDTO.thumbnail,prodDTO.code,prodDTO.stock)
             res.status(200).send({
                 msg: 'success',
                 prod
             })
 
-        } catch (error) {
-            
+        } catch (error) {         
             console.log(error.cause)
             done(error)
         }

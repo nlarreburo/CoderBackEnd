@@ -12,7 +12,6 @@ dotenv.config({
     path: enviroment === 'development' ? './.env.development' : './.env.production'
 })
 
-//const url = 'mongodb+srv://nicolaslarreburo:12qwaszxB1@cluster0.ahxowjc.mongodb.net/ecommerce?retryWrites=true&w=majority'
 const url = process.env.MONGO_URL || 'mongodb+srv://nicolaslarreburo:12qwaszxB1@cluster0.ahxowjc.mongodb.net/ecommerce?retryWrites=true&w=majority'
 module.exports ={
     port: process.env.PORT || 8080, 
@@ -36,7 +35,3 @@ module.exports ={
         seveUninitialized: false
     }
 }
-
-//module.exports = {configObject}
-
-//Creamos la conexion

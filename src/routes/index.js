@@ -7,6 +7,7 @@ const { MailRouter } = require('./mail.router.js')
 const { ChatRouter } = require('./chat.router.js')
 const errorHandler = require('../middleware/error/indexerror.js')
 const { MockingRouter } = require('./mockingproducts.router.js')
+const loggerTest = require('../routes/loggerTest.router.js')
 
 
 
@@ -28,6 +29,7 @@ router
     .use('/api/mail', mailRouter.getRouter())
     .use('/chat', chatRouter.getRouter())
     .use('/mockingproducts',mockingRouter.getRouter())
+    .use('/loggerTest',loggerTest)
     .use(errorHandler)
     
 

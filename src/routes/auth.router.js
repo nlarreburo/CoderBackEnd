@@ -17,6 +17,7 @@ class AuthRouter extends Router {
         this.get('/logout',["PUBLIC"],authController.authLogout)
         //current
         this.get('/current',["PUBLIC"],passportCall('jwt'),authController.authCurrent)
+        
     }
 }
 

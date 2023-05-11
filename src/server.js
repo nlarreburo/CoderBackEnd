@@ -14,6 +14,7 @@ const handlebars = require('express-handlebars')
 //--Router--
 const { router } = require('./routes')
 const {Server: HttpServer}= require( 'http')
+const { addLogger } = require('./middleware/logger.js')
 
 
 const app = express()
@@ -33,10 +34,10 @@ app.use(cookieParser()) //Palabra secreta
 //---PassPort---
 initPassport()  //clase 21 login
 //initializePassport() // clase 22 github
-initializePassportJWT()
+initializePassportJWT() 
 app.use(passport.initialize())
 //app.use(passport.session())
-app.use(logger('dev'))
+app.use(addLogger)
 //---Session Mongo---
 app.use(session(configObject.session))
 //Handlebars

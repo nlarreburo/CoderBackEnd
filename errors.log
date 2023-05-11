@@ -1,0 +1,24 @@
+{"level":"error","message":"alerta"}
+{"level":"error","message":"alerta"}
+{"level":"fatal","message":"alerta"}
+{"level":"fatal","message":"fatal"}
+{"level":"fatal","message":"fatal: 0"}
+{"level":"fatal","message":"error: 1"}
+{"level":"fatal","message":"fatal:0"}
+{"level":"fatal","message":"info: 3"}
+{"level":"fatal","message":"http: 4"}
+{"level":"fatal","message":"debug: 5"}
+{"level":"fatal","message":"fatal: 0"}
+{"level":"error","message":"error: 1"}
+{"level":"fatal","message":"fatal: 0"}
+{"level":"error","message":"error: 1"}
+{"level":"fatal","message":"fatal: 0"}
+{"level":"error","message":"error: 1"}
+{"level":"fatal","message":"fatal: 0"}
+{"level":"error","message":"error: 1"}
+{"level":"fatal","message":"fatal: 0"}
+{"level":"error","message":"error: 1"}
+{"level":"fatal","message":"fatal: 0"}
+{"level":"error","message":"error: 1"}
+{"level":"fatal","message":"fatal: 0"}
+{"level":"error","message":"error: 1"}
